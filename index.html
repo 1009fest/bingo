@@ -70,59 +70,70 @@
     <div id="grid"></div>
   </div>
 
-  <script>
-    const ITEMS = [
-      "denial / mutual pining",
-      "valentine",
-      "divorce",
-      "friendzone",
-      "puppy",
-      "kiss",
-      "soulmate",
-      "rivals / enemy",
-      "eye staring",
-      "food / cook",
-      "holding hands",
-      "circuit / race",
-      "class president / leader",
-      "secret admirer",
-      "accidental confession",
-      "jealousy",
-      "protective instinct",
-      "canon event",
-      "harry potter",
-      "walnut",
-      "perfume",
-      "scaredy-cat",
-      "muse",
-      "ragebaiting",
-      "ex"
-    ];
+ <script>
+  const ITEMS = [
+    "denial / mutual pining",
+    "valentine",
+    "divorce",
+    "friendzone",
+    "puppy",
+    "kiss",
+    "soulmate",
+    "rivals / enemy",
+    "eye staring",
+    "food / cook",
+    "holding hands",
+    "circuit / race",
+    "class president / leader",
+    "secret admirer",
+    "accidental confession",
+    "jealousy",
+    "protective instinct",
+    "canon event",
+    "harry potter",
+    "walnut",
+    "perfume",
+    "scaredy-cat",
+    "muse",
+    "ragebaiting",
+    "ex"
+  ];
 
-    function shuffle(array) {
-      const arr = [...array];
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
+  function shuffle(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
     }
+    return arr;
+  }
 
-    const grid = document.getElementById("grid");
-    const shuffled = shuffle(ITEMS);
+  const STORAGE_KEY = "bingo-card";
 
-    for (let i = 0; i < 25; i++) {
-      const cell = document.createElement("div");
-      cell.className = "cell";
-      cell.innerText = shuffled[i];
+  let card = localStorage.getItem(STORAGE_KEY);
 
-      cell.addEventListener("click", () => {
-        cell.classList.toggle("marked");
-      });
+  if (card) {
+    card = JSON.parse(card);
+  } else {
+    card = shuffle(ITEMS);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(card));
+  }
 
-      grid.appendChild(cell);
-    }
-  </script>
+  const grid = document.getElementById("grid");
+
+  for (let i = 0; i < 25; i++) {
+    const cell = document.createElement("div");
+    cell.className = "cell";
+    cell.innerText = card[i];
+
+    cell.addEventListener("click", () => {
+      cell.classList.toggle("marked");
+    });
+
+    grid.appendChild(cell);
+  }
+</script>
+
 </body>
 </html>
 
